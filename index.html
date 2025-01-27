@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Enable Disable Buttons</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="https://pyscript.net/releases/2022.12.1/pyscript.js"></script>
+</head>
+<body>
+    <button id="switch1" py-click="create()">New Sentence</button>
+    <div id="sentence-output"></div> 
+
+    <py-script>
+        import random
+
+        #Phrase Structure Rules for terminals
+        def Det():
+            Det_choice = ["the", "a", "some", "any", "every"]
+            return random.choice(Det_choice)
+
+        def Adj():
+            Adj_choice = ["green", "young", "tired", "confused"]
+            return random.choice(Adj_choice)
+
+        def N():
+            N_choice = ["dog", "cat"]
+            return random.choice(N_choice)
+
+        def PropN():
+            PropN_choice = ["John", "Mary"]
+            return random.choice(PropN_choice)
+
+        def Vi():
+            Vi_choice = ["sleeps", "walks"]
+            return random.choice(Vi_choice)
+
+        def Vt():
+            Vt_choice = ["loves", "hates"]
+            return random.choice(Vt_choice)
+
+        def Vc():
+            Vc_choice = ["says", "thinks", "believes"]
+            return random.choice(Vc_choice)
+
+        def Comp():
+            Comp_choice = ["that"]
+            return random.choice(Comp_choice)
+
+        #Phrase Structure Rules for nonterminals
+        def NP():
+            NP_choices = [[Det, Adj, N], [Det, N], [Adj, PropN], [PropN]]
+            chosen_NP = random.choice(NP_choices)
+            return " ".join(way() for way in chosen_NP)
+
+        def VP():
+            VP_choices = [[Vi], [Vt, NP], [Vc, Comp, S]]
+            chosen_VP = random.choice(VP_choices)
+            return " ".join(way() for way in chosen_VP)
+
+        def S():
+            return NP() + " " + VP()
+
+        #get sentence and generate
+        def gensen():
+            sentence = "Created Sentence: "+S() 
+            Element("sentence-output").element.innerHTML = sentence 
+        
+        #button and functions    
+        def create():
+            gensen() 
+    </py-script>
+    <h5>
+        <p>Each sentence generated obeys the laws of natural grammer. Press the button to create a new sentence.  </p>
+    </h5>
+</body>
+</html>
